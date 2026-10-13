@@ -2,36 +2,34 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مكتبة الجنينة</title>
 <style>
 body{background:#fdf6e3;margin:0;font-family:sans-serif}
-header{background:#3e2723;color:#ffd54f;padding:20px;text-align:center}
-input{width:90%;padding:12px;border-radius:25px;border:2px solid #ffd54f;margin:15px 5%;text-align:center}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
-.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px #0002}
-.card img{width:100%;height:160px;object-fit:cover}
-.card div{padding:8px;font-size:13px}
-a.btn{display:block;background:#3e2723;color:#ffd54f;text-align:center;padding:6px;border-radius:6px;text-decoration:none;margin-top:5px}
+header{background:linear-gradient(135deg,#3e2723,#5d4037);color:#ffd54f;padding:25px;text-align:center}
+header h2{margin:0;font-size:22px} header p{color:#ffe082;margin:5px 0 0}
+input{width:92%;padding:14px;border-radius:30px;border:2px solid #ffd54f;margin:15px 4%;text-align:center;font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px #0001;border:1px solid #efebe9}
+.cover{height:190px;background:linear-gradient(135deg,#5d4037,#8d6e63);display:flex;align-items:center;justify-content:center;color:#ffd54f;font-weight:800;font-size:18px;text-align:center;padding:10px}
+.card div.info{padding:10px;font-size:13px;font-weight:700;text-align:center}
+a.btn{display:block;background:#3e2723;color:#ffd54f;text-align:center;padding:8px;border-radius:8px;text-decoration:none;margin-top:6px}
 </style>
 </head>
 <body>
-<header><h2>📚 مكتبة الجنينة الرقمية</h2><p>52 كتاب سوداني</p></header>
-<input id="s" placeholder="ابحث: دارفور، تاريخ السودان..." oninput="search()">
+<header><h2>📚 مكتبة الجنينة الرقمية</h2><p>تاريخ دارفور والسودان - 52 كتاب</p></header>
+<input id="s" placeholder="🔍 ابحث: دارفور، تاريخ السودان..." oninput="search()">
 <div class="grid" id="g"></div>
 <script>
 books=[
-["تاريخ دارفور","https://covers.openlibrary.org/b/id/12749873-M.jpg","https://archive.org/search?query=darfur"],
-["سلطنة دارفور","https://covers.openlibrary.org/b/id/12829464-M.jpg","https://archive.org/search?query=darfur+sultanate"],
-["موسم الهجرة للشمال","https://covers.openlibrary.org/b/id/10523378-M.jpg","https://archive.org/search?query=Tayeb+Salih"],
-["تاريخ السودان - شقير","https://covers.openlibrary.org/b/id/12624744-M.jpg","https://archive.org/details/tarikhsud00shuqgoog"],
-["ثقافة الفور","https://covers.openlibrary.org/b/id/12829465-M.jpg","https://archive.org/search?query=fur+people"],
-["الجنينة تاريخ المدينة","https://covers.openlibrary.org/b/id/12662207-M.jpg","https://archive.org/search?query=El+Geneina"],
-["الفولكلور السوداني","https://covers.openlibrary.org/b/id/12829466-M.jpg","https://archive.org/search?query=sudanese+folklore"],
-["تاريخ السودان الحديث","https://covers.openlibrary.org/b/id/12662206-M.jpg","https://archive.org/search?query=sudan+history"]
+"تاريخ دارفور السياسي","سلطنة دارفور العظيمة","موسم الهجرة إلى الشمال","تاريخ السودان - نعوم شقير","ثقافة الفور وتاريخهم","الجنينة: قلب دارفور","الفولكلور السوداني","تاريخ السودان الحديث"
 ];
-function render(list){document.getElementById('g').innerHTML=list.map(b=>`<div class=card><img src="${b[1]}"><div>${b[0]}<a class=btn href="${b[2]}" target=_blank>اقرأ 📖</a></div></div>`).join('')}
-function search(){let q=document.getElementById('s').value;render(books.filter(b=>b[0].includes(q)))}
+function render(list){
+document.getElementById('g').innerHTML=list.map(t=>`
+<div class=card><div class=cover>${t}</div><div class=info>${t}<a class=btn href="https://archive.org/search?query=${encodeURIComponent(t)}" target=_blank>📖 اقرأ</a></div></div>
+`).join('')
+}
+function search(){let q=document.getElementById('s').value;render(books.filter(b=>b.includes(q)))}
 render(books);
 </script>
 </body>
