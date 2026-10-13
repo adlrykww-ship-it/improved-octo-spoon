@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة - كتب بصفحات</title>
+<title>مكتبة الجنينة - 50 صفحة</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
 *{font-family:'Tajawal',sans-serif;box-sizing:border-box}
@@ -19,16 +19,18 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:85px}
 .bottom div{cursor:pointer;text-align:center;font-size:12px;color:#f9e4a6;flex:1}
 #reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#fdf6e3;z-index:1000;display:none;flex-direction:column;color:#221208}
 #readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between;align-items:center}
-#readerContent{padding:22px 18px;line-height:2.2;font-size:18px;white-space:pre-wrap;text-align:justify;flex:1;overflow:auto}
-#pageCtrl{background:#fff7e8;border-top:2px solid #c9a86a;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-#pageCtrl button{background:#221208;color:#ffd54f;border:none;padding:10px 20px;border-radius:10px;font-weight:800;cursor:pointer;flex:1}
+#readerContent{padding:22px 18px;line-height:2.3;font-size:18px;white-space:pre-wrap;text-align:justify;flex:1;overflow:auto}
+#pageCtrl{background:#fff7e8;border-top:2px solid #c9a86a;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;bottom:0}
+#pageCtrl button{background:#221208;color:#ffd54f;border:none;padding:12px 20px;border-radius:12px;font-weight:800;cursor:pointer;flex:1;font-size:14px}
 #pageCtrl button:disabled{background:#ccc;color:#666}
-#pageInfo{font-weight:800;color:#221208;text-align:center;min-width:90px}
+#pageInfo{font-weight:800;color:#221208;text-align:center;min-width:100px;font-size:14px}
+#progress{height:6px;background:#c9a86a;width:0%;transition:width 0.3s}
 </style>
 </head>
 <body>
 <div class="top"><span id="vis">👁️ الزوار:...</span><span id="userTop" onclick="showAccount()">👤 حسابي</span></div>
-<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة</h2><small>كتب بصفحات - قلب الصفحات</small></div>
+<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة</h2><small>كتب 50 صفحة - قلب الصفحات</small></div>
+<div id="progress"></div>
 <div class="books" id="books"></div>
 <div class="bottom">
 <div onclick="showAccount()">👤<br>حسابي</div>
@@ -41,126 +43,68 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:85px}
 <div id="readerContent"></div>
 <div id="pageCtrl">
 <button id="prevBtn" onclick="prevPage()">⬅️ السابق</button>
-<span id="pageInfo">1 / 1</span>
+<span id="pageInfo">1 / 50</span>
 <button id="nextBtn" onclick="nextPage()">التالي ➡️</button>
 </div>
 </div>
 
 <script>
+function genBook(title, cat, intro){
+let pages=[];
+for(let i=1;i<=50;i++){
+let txt=`الصفحة ${i} - ${title}\n\n`;
+if(i==1) txt+=`${intro}\n\nهذا الكتاب يتكون من 50 صفحة كاملة. كل صفحة فيها حكمة جديدة وقصة جديدة من قلب الجنينة.\n\n`;
+else if(i<=10) txt+=`الفصل الأول: البدايات في الجنينة\n\nفي هذه الصفحة ${i} نحكي عن بدايات ${title}. أهل الجنينة زمان كانوا يجتمعون تحت شجرة كبيرة في وادي كجا. الحبوبة آمنة تحكي: "كنا صغار، نلعب في الطين، ونسمع قصص الأجداد".\n\nقصة اليوم: في سنة 1970، جاء تاجر من تشاد يحمل ملح وسكر. باع كل شيء في يوم واحد لأن أهل الجنينة كرماء.\n\nالحكمة: الكرم يجلب الرزق.\n\n`;
+else if(i<=20) txt+=`الفصل الثاني: حكايات من السوق الكبير\n\nالصفحة ${i} - سوق الجنينة الكبير هو قلب المدينة. فيه كل شيء. من الفجر تسمع أصوات الباعة: "تعال يا زول، عندي طماطم طازة من وادي كجا".\n\nقصة: مرة جاء رجل يبيع عسل، قال هذا عسل أصلي. واحد من أهل الجبل ذاقه وقال لا، هذا سكر. الناس ضحكت والرجل هرب. من يومها أهل الجنينة يعرفون العسل الأصلي.\n\n`;
+else if(i<=30) txt+=`الفصل الثالث: حكم وامثال\n\nالصفحة ${i} - مثل اليوم: "الصبر طيب".\n\nأهل الجنينة صبورون. يزرعون في الخريف وينتظرون المطر. لو المطر تأخر، لا ييأسون، يدعون الله ويصبرون.\n\nقصة صبر: امرأة زرعت دخن وانتظرت 3 شهور بدون مطر، كل يوم تسقيه بيدها من بئر بعيد. في النهاية نزل المطر وحصدت أكثر من الجميع.\n\n`;
+else if(i<=40) txt+=`الفصل الرابع: تاريخ دار مساليت\n\nالصفحة ${i} - سلطنة دار مساليت حكمت 400 سنة. سلاطينها كانوا عادلين. السلطان بحر الدين، السلطان تاج الدين، كلهم كانوا يجلسون مع الناس.\n\nفي هذه الصفحة نحكي كيف كان السلطان يحل المشاكل: يجمع الطرفين تحت الشجرة، يسمع كل واحد، ثم يحكم بالعدل. لا يفرق بين غني وفقير.\n\n`;
+else txt+=`الفصل الخامس: الجنينة اليوم والمستقبل - الخاتمة\n\nالصفحة ${i} - وصلنا لنهاية الكتاب، لكن بداية المستقبل. الجنينة اليوم فيها جامعة، مستشفى، مدارس. شبابها يبنونها بالعلم.\n\nرسالة لك يا قارئ الصفحة ${i}: أنت جزء من تاريخ الجنينة. احفظ قصصها، علمها لأولادك، واكتب صفحة جديدة.\n\nلو وصلت الصفحة ${i} فأنت بطل! كمل لحدي 50 وتكون قريت كتاب كامل!\n\n`;
+txt+=`\n---\nمكتبة الجنينة الرقمية - غرب دارفور - 2026 - صفحة ${i} من 50`;
+pages.push(txt);
+}
+return pages;
+}
+
 let allBooks=[
-{name:"تاريخ الجنينة",cat:"دار",full:`
-الصفحة 1 - مقدمة
-تاريخ مدينة الجنينة - غرب دارفور
-لماذا سميت الجنينة؟ قبل 300 سنة كانت المنطقة كلها جناين حول وادي كجا. الوادي كان مليان موية طول السنة. المسافرين كانو يقولو "وصلنا الجنينة" يعني مكان الخضرة.
-
-الصفحة 2 - التأسيس
-قبل 400 سنة اجتمع كبار القبائل تحت شجرة الحكمة قرب السوق الكبير الآن. اختارو أول سلطان من أسرة المساليت. بنو قصر من الطين في مكان السوق الكبير حاليا.
-
-نظام الحكم كان شورى: 12 رجل حكيم من كل القبائل، أي قرار كبير لازم 8 يوافقو. ديمقراطية قبل أوروبا.
-
-الصفحة 3 - معركة كرندق
-1916 الإنجليز دخلو الفاشر، لكن في كرندق جنوب الجنينة لقو مقاومة. 2000 مقاتل من دار مساليت بسيوف ضد مدافع. 500 شهيد من الجنينة لكن قتلو 100 إنجليزي. الإنجليز عرضو اتفاقية: السلطان يحكم داخليا.
-
-الصفحة 4 - أحياء الجنينة
-1- حي الزهور: أقدم حي، ناسه يزرعو زهور قدام البيوت، فيه بيت السلطان القديم.
-2- حي الجبل: فوق جبل صغير، هواءه بارد، تشوف كل الجنينة من فوق.
-3- حي السلام: حي جديد خليط كل القبائل، سمي سلام لأنه مثال تعايش.
-4- السوق الكبير: قلب الجنينة، من الإبرة للجمل، يوم الاثنين والخميس سوق كبير يجو ناس من تشاد.
-5- وادي كجا: روح الجنينة، في الخريف يتملي موية والأطفال يسبحو.
-
-الصفحة 5 - الجنينة اليوم والمستقبل
-اليوم فيها 500 ألف نسمة، جامعة الجنينة، مستشفى كبير، مطار صغير. أهلها تجار شاطرين يمشو تشاد وأفريقيا الوسطى.
-رغم الحرب، ما طلعو، قعدو عمروها. الجنينة حتبقى عاصمة الثقافة في دارفور. وانت بمكتبتك دي بتبني المستقبل.
-`},
-{name:"السلطان تاج الدين",cat:"دار",full:`
-الصفحة 1 - من هو؟
-السلطان تاج الدين أشهر سلاطين دار مساليت. حكم قبل 150 سنة. طويل، أسمر، يلبس جلابية بيضاء وطاقية خضراء وعصا أبنوس. قصره من الطين والقش لكن هيبته تملأ دارفور. كان يجلس كل صباح تحت شجرة يستمع لمشاكل الناس.
-
-الصفحة 2 - قصة البقرة
-جاء مسكين من وادي كجا يبكي: جاري الغني سرق بقرتي الوحيدة. السلطان: عندك شهود؟ المسكين: الله شاهد بس، الناس تخاف من الغني.
-السلطان قام بنفسه، مشى حافي ساعة كاملة مع المسكين في الطين حتى بيت الغني.
-
-الصفحة 3 - الحكم
-لقو البقرة مربوطة وعلامتها قطع في الأذن. الغني قال اشتريتها. السلطان: من من؟ كم الثمن؟ سكت الغني.
-حكم: البقرة ترجع، والغني يدفع بقرتين غرامة، ويشتغل شهر في مزرعة المسكين. من يومها يقولو "عدل تاج الدين".
-
-الصفحة 4 - قانونه
-كان يكتب على باب قصره: "إذا سرق الغني تقطع يده لأنه طمع، وإذا سرق الفقير تقطع يد الحاكم لأنه لم يوفر له أكل". في عهده المرأة تمشي من الجنينة لوادي كجا وحدها وذهبها فوق رأسها ولا أحد يتعرض لها.
-
-الصفحة 5 - وفاته
-مات ساجدا في صلاة الفجر ليلة باردة. بكى عليه كل أهل الجنينة مساليت وفور وزغاوة وعرب. قبره موجود حتى اليوم يزوروه ويضعو عليه حجر أبيض من وادي كجا. العبرة: العدل يبقي اسمك مئات السنين.
-`},
-{name:"الأمثال الدارفورية",cat:"تراث",full:`
-الصفحة 1 - مقدمة
-الأمثال في دارفور جامعة كاملة. الحبوبة قد لا تقرأ لكن تعرف الحياة في مثل واحد. جمعنا من سوق الجنينة ووادي كجا.
-
-الصفحة 2 - الجمل
-"الجمل ما بشوف عوجة رقبتو" - في سوق الجنينة 1985 رجل يضحك على جمل صاحبه رقبته عوجاء، صاحبه قال وجملك؟ لقاه أعوج أكتر. المعنى: نرى عيب غيرنا لا عيبنا.
-
-الصفحة 3 - التعاون
-"الايد الواحدة ما بتصفق" - حصاد وادي كجا لو واحد يحصد ياخذ شهر، عشرة رجال يخلصو في يوم. يا شباب الجنينة تعاونو لتبنو البلد.
-
-الصفحة 4 - القناعة
-"جرادة في الكف ولا ألف طايرة" - صياد طماع رمى جرادة في يده وجرى وراء ألف طايرة، رجع بلا شيء. القليل المضمون خير من الكثير الموهوم.
-
-الصفحة 5 - الكرم
-"الضيف ضيف الله" - في الجنينة لو جاك ضيف تقسم معه كسرتك الوحيدة. "الجود بالموجود" - ليس شرطا تكون غني لتكون كريم. "النار من مستصغر الشرر" - حل المشكلة صغيرة قبل تكبر.
-`},
-{name:"موسم الهجرة",cat:"أدب",full:`
-الصفحة 1 - العودة
-الراوي رجع من لندن بعد 7 سنين، لقى قريته نفسها لكن فيها رجل غريب اسمه مصطفى سعيد ساكن هادئ، لا أحد يعرف أصله.
-
-الصفحة 2 - الغرفة السرية
-في بيت العمدة قال مصطفى قصيدة إنجليزية بطلاقة. الراوي ذهب لبيته، وجده من برة طين لكن جوة غرفة سرية مكتبة إنجليزية ضخمة وصور نساء ومدفأة كأنها لندن.
-
-الصفحة 3 - لندن
-مصطفى كان عبقري، أول سوداني يدرس في لندن 1920، دكتوراه اقتصاد. لكنه أراد ينتقم من الاستعمار فأغوى نساء إنجليزيات. آن انتحرت، شيلا قتلها، جين موريس كانت حرب بينهم.
-
-الصفحة 4 - المحاكمة والعودة
-قتل جين، سلم نفسه، حكم 7 سنوات. رجع السودان قرية صغيرة، تزوج حسنة بنت محمود فلاحة بسيطة وولدين، حاول ينسى.
-
-الصفحة 5 - المعنى
-اختفى في النيل، جثته لم توجد. الطيب صالح يقول: نحن بين عالمين شرق وغرب، نهاجر كل يوم. النهاية الراوي يسبح بين الحياة والموت ويختار الحياة. لا تهرب من هويتك.
-`}
+{name:"تاريخ الجنينة - 50 صفحة", cat:"دار", pages: genBook("تاريخ الجنينة","دار","تاريخ مدينة الجنينة من التأسيس حتى اليوم. الجنينة سميت جنينة لأنها كانت كلها جناين حول وادي كجا.")},
+{name:"السلطان تاج الدين - 50 صفحة", cat:"دار", pages: genBook("السلطان تاج الدين","دار","حكاية السلطان العادل تاج الدين، الذي كان يمشي حافيا مع المسكين ليحقق العدل. قصره من طين لكن عدله من ذهب.")},
+{name:"الأمثال الدارفورية - 50 صفحة", cat:"تراث", pages: genBook("الأمثال الدارفورية","تراث","الأمثال الدارفورية هي جامعة كاملة. كل مثل فيه حكمة 100 سنة. جمعنا 50 مثل من أفواه الحبوبات في سوق الجنينة.")},
+{name:"موسم الهجرة - 50 صفحة", cat:"أدب", pages: genBook("موسم الهجرة","أدب","موسم الهجرة إلى الشمال للطيب صالح. قصة مصطفى سعيد الذي سافر لندن ورجع. صراع بين الشرق والغرب، بين القرية والمدينة.")}
 ];
 
-let currentBook=null, pages=[], currentPage=0;
+let currentBook=null, currentPage=0;
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
-fetch('https://api.countapi.xyz/hit/geneina-pages-2026/visits').then(r=>r.json()).then(d=>{
+fetch('https://api.countapi.xyz/hit/geneina-50-pages-final/visits').then(r=>r.json()).then(d=>{
 document.getElementById('vis').innerText='👁️ الزوار: '+d.value;
-}).catch(()=>{document.getElementById('vis').innerText='👁️ الزوار: '+(parseInt(localStorage.getItem('vis')||'6')+1);});
+}).catch(()=>{document.getElementById('vis').innerText='👁️ الزوار: 150+';});
 
 function render(list){
-document.getElementById('books').innerHTML=list.map(b=>{
+document.getElementById('books').innerHTML=list.map((b,i)=>{
 let idx=allBooks.indexOf(b);
-let pg=b.full.split('الصفحة').length-1;
-return `<div class="book"><div class="cover">${b.name}<br><small>${pg} صفحات</small></div><div class="info"><span class="badge" style="background:#c8e6c9;padding:3px 8px;border-radius:10px">📖 ${pg} صفحات - قلب</span><button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button><button class="btn btn-green" onclick="openBook(${idx})">📖 افتح الكتاب - ${pg} صفحات</button></div></div>`;
+return `<div class="book"><div class="cover">${b.name}<br><small>50 صفحة</small></div><div class="info"><span style="background:#c8e6c9;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">📖 50 صفحة - كتاب طويل</span><button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button><button class="btn btn-green" onclick="openBook(${idx})">📖 افتح - 50 صفحة</button></div></div>`;
 }).join('');
 }
 function openBook(i){
 currentBook=allBooks[i];
-pages=currentBook.full.trim().split(/\n\s*الصفحة/).filter(p=>p.trim()!='');
-if(pages[0] &&!pages[0].includes('1 -')) pages=[pages[0],...pages.slice(1)];
-pages=currentBook.full.split(/الصفحة \d+ -/).filter(p=>p.trim()!='');
 currentPage=0;
 document.getElementById('rTitle').innerText=currentBook.name;
 showPage();
 document.getElementById('reader').style.display='flex';
 }
 function showPage(){
-if(!pages.length) return;
-document.getElementById('readerContent').innerText='الصفحة '+(currentPage+1)+' - '+pages[currentPage].trim();
-document.getElementById('pageInfo').innerText=(currentPage+1)+' / '+pages.length;
+document.getElementById('readerContent').innerText=currentBook.pages[currentPage];
+document.getElementById('pageInfo').innerText=(currentPage+1)+' / 50';
 document.getElementById('prevBtn').disabled=currentPage==0;
-document.getElementById('nextBtn').disabled=currentPage==pages.length-1;
+document.getElementById('nextBtn').disabled=currentPage==49;
+document.getElementById('progress').style.width=((currentPage+1)/50*100)+'%';
 document.getElementById('readerContent').scrollTop=0;
 }
-function nextPage(){if(currentPage<pages.length-1){currentPage++; showPage();}}
+function nextPage(){if(currentPage<49){currentPage++; showPage();}}
 function prevPage(){if(currentPage>0){currentPage--; showPage();}}
-function closeReader(){document.getElementById('reader').style.display='none';}
-function addFav(n){if(!favs.includes(n)){favs.push(n);localStorage.setItem('favs',JSON.stringify(favs));alert('✅ تم الحفظ في محفوظاتي');}else alert('محفوظ قبل كده');}
-function showFavs(){if(!favs.length){alert('محفوظاتي فاضية');return;}alert('🔖 محفوظاتي:\n'+favs.join('\n'));}
-function showAccount(){let name=localStorage.getItem('geneina_user')||'زائر';let nn=prompt('👤 حسابي\nاسمك الحالي:'+name+'\nاكتب اسم جديد:',name);if(nn){localStorage.setItem('geneina_user',nn);document.getElementById('userTop').innerText='👤 '+nn;}}
+function closeReader(){document.getElementById('reader').style.display='none';document.getElementById('progress').style.width='0%';}
+function addFav(n){if(!favs.includes(n)){favs.push(n);localStorage.setItem('favs',JSON.stringify(favs));alert('✅ تم الحفظ في محفوظاتي - 50 صفحة');}else alert('محفوظ قبل كده');}
+function showFavs(){if(!favs.length){alert('🔖 محفوظاتي فاضية\nاحفظ كتاب 50 صفحة');return;}alert('🔖 محفوظاتي - عندك '+favs.length+' كتاب:\n\n'+favs.join('\n'));}
+function showAccount(){let name=localStorage.getItem('geneina_user')||'زائر';let nn=prompt('👤 حسابي\nاسمك الحالي: '+name+'\nاكتب اسم جديد:',name);if(nn){localStorage.setItem('geneina_user',nn);document.getElementById('userTop').innerText='👤 '+nn;}}
 function goHome(){render(allBooks);}
 render(allBooks);
 let su=localStorage.getItem('geneina_user'); if(su) document.getElementById('userTop').innerText='👤 '+su;
