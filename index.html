@@ -22,4 +22,17 @@ a.btn{display:block;background:#3e2723;color:#ffd54f;text-align:center;padding:6
 <script>
 books=[
 ["تاريخ دارفور","https://covers.openlibrary.org/b/id/12749873-M.jpg","https://archive.org/search?query=darfur"],
-["سلطنة دارفور","https
+["سلطنة دارفور","https://covers.openlibrary.org/b/id/12829464-M.jpg","https://archive.org/search?query=darfur+sultanate"],
+["موسم الهجرة للشمال","https://covers.openlibrary.org/b/id/10523378-M.jpg","https://archive.org/search?query=Tayeb+Salih"],
+["تاريخ السودان - شقير","https://covers.openlibrary.org/b/id/12624744-M.jpg","https://archive.org/details/tarikhsud00shuqgoog"],
+["ثقافة الفور","https://covers.openlibrary.org/b/id/12829465-M.jpg","https://archive.org/search?query=fur+people"],
+["الجنينة تاريخ المدينة","https://covers.openlibrary.org/b/id/12662207-M.jpg","https://archive.org/search?query=El+Geneina"],
+["الفولكلور السوداني","https://covers.openlibrary.org/b/id/12829466-M.jpg","https://archive.org/search?query=sudanese+folklore"],
+["تاريخ السودان الحديث","https://covers.openlibrary.org/b/id/12662206-M.jpg","https://archive.org/search?query=sudan+history"]
+];
+function render(list){document.getElementById('g').innerHTML=list.map(b=>`<div class=card><img src="${b[1]}"><div>${b[0]}<a class=btn href="${b[2]}" target=_blank>اقرأ 📖</a></div></div>`).join('')}
+function search(){let q=document.getElementById('s').value;render(books.filter(b=>b[0].includes(q)))}
+render(books);
+</script>
+</body>
+</html>
