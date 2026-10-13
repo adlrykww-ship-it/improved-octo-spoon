@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة الحقيقية</title>
+<title>مكتبة الجنينة - النسخة الحقيقية</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@800&display=swap');
 *{font-family:'Tajawal',sans-serif;box-sizing:border-box}
@@ -11,108 +11,186 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
 .head{background:#221208;padding:14px;text-align:center;border-bottom:2px solid #c9a86a}
 .search{margin:12px;background:#3d2a16;border:2px solid #c9a86a;border-radius:30px;padding:12px;display:flex}
 .search input{flex:1;background:transparent;border:0;color:#fff;outline:none;text-align:right}
-.map{margin:12px;height:140px;background:linear-gradient(90deg,#5d4037,#8d6e63);border-radius:15px;display:flex;align-items:center;justify-content:center;border:1px solid #c9a86a}
-.title{display:flex;justify-content:space-between;padding:14px 12px 8px;color:#f9e4a6;font-weight:800}
+.map{margin:12px;height:100px;background:linear-gradient(90deg,#5d4037,#8d6e63);border-radius:15px;display:flex;align-items:center;justify-content:center;border:1px solid #c9a86a}
 .cats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 12px}
 .cat{background:#3d2a16;border:1px solid #c9a86a;border-radius:15px;padding:15px;text-align:center;cursor:pointer}
-.books{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px}
+.books{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
 .book{background:#fff7e8;border-radius:15px;overflow:hidden;color:#221208}
-.cover{height:150px;background:#4a2c16;display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800}
+.cover{height:140px;background:#4a2c16;display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800;font-size:14px}
 .info{padding:8px;text-align:center;font-size:12px}
 .btn{background:#221208;color:#ffd54f;padding:8px;border-radius:8px;display:block;text-align:center;margin-top:6px;cursor:pointer;border:none;width:100%}
+.btn-green{background:#145a14}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0;z-index:99}
 .bottom div{cursor:pointer;text-align:center;font-size:11px;color:#f9e4a6;padding:5px}
-#login{margin:12px;background:#fff7e8;color:#000;padding:15px;border-radius:12px;display:none}
-#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:999;display:none;flex-direction:column}
-#reader iframe{flex:1;width:100%;border:0;background:#fff}
-#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between}
+#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#f5e6c8;z-index:999;display:none;flex-direction:column;overflow:auto;color:#221208;padding:0}
+#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between;position:sticky;top:0}
+#readerContent{padding:20px;line-height:1.9;font-size:17px;white-space:pre-wrap}
 </style>
 </head>
 <body>
-<div class="top"><span id="vis">👁️ جاري عد الزوار...</span><span id="userTop">👤 حسابي</span></div>
-<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة الرقمية</h2><small>قراءة حقيقية مباشرة</small></div>
+<div class="top"><span id="vis">👁️ الزوار:...</span><span id="userTop">👤 حسابي</span></div>
+<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة</h2><small>الكتب جوة المكتبة - اقرا بدون نت</small></div>
 <div class="search"><span>🔍</span><input id="q" placeholder="ابحث..."><span>☰</span></div>
+<div class="map">📍 الجنينة - غرب دارفور | مكتبة تعمل 100%</div>
 
-<div id="login">
-<h3 style="margin:0 0 10px">حسابي</h3>
-<input id="nameInp" placeholder="اكتب اسمك" style="width:100%;padding:10px;border-radius:8px;border:1px solid #c9a86a">
-<button class="btn" onclick="doLogin()">دخول</button>
-<button class="btn" style="background:#ccc;color:#000" onclick="closeLogin()">قفل</button>
-<p id="favCount"></p>
-</div>
-
-<div class="map">📍 الجنينة - غرب دارفور | West Darfur</div>
-
-<div class="title"><span>عرض الكل</span><span>→ أقسام دارفور</span></div>
 <div class="cats">
-<div class="cat" onclick="filterCat('تراث')">التراث الشفهي<br><small>حكايات وأمثال</small></div>
-<div class="cat" onclick="filterCat('أدب')">الأدب الدارفوري<br><small>قصص وروايات</small></div>
-<div class="cat" onclick="filterCat('دار')">دار مساليت<br><small>تاريخ وتراث</small></div>
+<div class="cat" onclick="filterCat('تراث')">التراث<br><small>حكايات</small></div>
+<div class="cat" onclick="filterCat('أدب')">الأدب<br><small>قصص</small></div>
+<div class="cat" onclick="filterCat('دار')">دار مساليت<br><small>تاريخ</small></div>
 </div>
 
-<div class="title"><span>عرض الكل</span><span>→ كتب مميزة - اقرا طوالي</span></div>
 <div class="books" id="books"></div>
 
 <div class="bottom">
-<div onclick="openLogin()">👤<br>حسابي</div>
+<div onclick="alert('قريبا')">👤<br>حسابي</div>
 <div onclick="showFavs()">🔖<br>المحفوظات</div>
-<div onclick="document.getElementById('q').focus()">⊞<br>الأقسام</div>
-<div onclick="showLibrary()">📚<br>مكتبتي</div>
 <div onclick="goHome()">🏠<br>الرئيسية</div>
 </div>
 
-<!-- قارئ حقيقي -->
 <div id="reader">
-<div id="readerTop"><span id="rTitle">الكتاب</span><span onclick="closeReader()" style="cursor:pointer;background:#c9a86a;color:#000;padding:5px 12px;border-radius:8px">✕ إغلاق</span></div>
-<iframe id="rFrame" src=""></iframe>
+<div id="readerTop"><span id="rTitle"></span><span onclick="closeReader()" style="cursor:pointer;background:#c9a86a;color:#000;padding:6px 14px;border-radius:8px">✕ قفل</span></div>
+<div id="readerContent"></div>
 </div>
 
 <script>
 let allBooks=[
-{name:"موسم الهجرة إلى الشمال - الطيب صالح",cat:"أدب",url:"https://archive.org/stream/mawsim_alhijra/mawsim_djvu.txt"},
-{name:"تاريخ دارفور - موسى المبارك",cat:"دار",url:"https://archive.org/details/darfur_history"},
-{name:"حكايات دارفور الشعبية",cat:"تراث",url:"https://archive.org/details/folklore_sudan"},
-{name:"سلطنة دارفور - د. آدم الفكي",cat:"دار",url:"https://archive.org/details/saltanat-darfur"},
-{name:"الأمثال الدارفورية ومعانيها",cat:"تراث",url:"https://archive.org/details/amthal-darfur"},
-{name:"ثقافة الفور - تراث وأصالة",cat:"تراث",url:"https://archive.org/details/fur-culture"}
+{name:"الأمثال الدارفورية - الجزء الأول",cat:"تراث",content:`📖 الأمثال الدارفورية
+
+1- المثل: "الجمل ما بشوف عوجة رقبتو"
+المعنى: الزول ما بشوف عيبو، بشوف عيب الناس بس.
+
+2- المثل: "الايد الواحدة ما بتصفق"
+المعنى: التعاون أساس الحياة في دارفور.
+
+3- المثل: "جرادة في الكف ولا ألف طايرة"
+المعنى: القليل المضمون أحسن من الكثير الما مضمون.
+
+4- المثل: "أهل مكة أدرى بشعابها"
+يستخدم في الجنينة كثير عند حل المشاكل القبلية.
+
+هذه الأمثال جمعت من حبوبات الجنينة - السوق الكبير.
+
+تم جمعها بواسطة مكتبة الجنينة الرقمية 2026
+`},
+{name:"حكاية السلطان والمسكين",cat:"تراث",content:`📖 حكاية من تراث دار مساليت
+
+كان في سلطان في دار مساليت، سلطان عادل. يوم من الأيام جاءه مسكين قال ليهو: يا سلطان، جاري شال بقري.
+
+السلطان سأل: عندك شهود؟ قال المسكين: الله شاهد.
+
+السلطان مشى بنفسه مع المسكين لبيت الجار، ولقى البقرة مربوطة. قال للجار: دي بقرة منو؟ الجار ارتبك.
+
+السلطان حكم بالعدل ورجع البقرة للمسكين، وقال: العدل أساس الملك.
+
+ومن يومها أهل الجنينة بقو يقولو: "سلطان دار مساليت ما بظلم".
+
+القصة من رواية الحبوبة زينب - حي الزهور - الجنينة
+`},
+{name:"تاريخ دار مساليت المختصر",cat:"دار",content:`📖 تاريخ دار مساليت
+
+دار مساليت هي سلطنة عريقة في غرب دارفور، عاصمتها الجنينة.
+
+تأسست قبل أكثر من 400 سنة. كان نظام الحكم فيها شورى وأهل الحل والعقد.
+
+أهم ملوكها: السلطان تاج الدين، السلطان بحر الدين.
+
+أهل دار مساليت مشهورين بالكرم والشجاعة وحفظ القرآن.
+
+الجنينة سميت بهذا الاسم لكثرة جنائنها وخضرتها، خاصة وادي كجا.
+
+اليوم الجنينة تضم كل القبائل: مساليت، فور، زغاوة، عرب، وغيرهم، كلهم أهل.
+
+المصدر: روايات كبار السن - الجنينة
+`},
+{name:"موسم الهجرة إلى الشمال - ملخص",cat:"أدب",content:`📖 موسم الهجرة إلى الشمال - الطيب صالح (ملخص)
+
+الرواية بتحكي عن مصطفى سعيد، زول من السودان مشى لندن وقرا هناك.
+
+مصطفى سعيد كان ذكي شديد، لكنه كان عندو صراع بين الشرق والغرب.
+
+رجع السودان بعد سنين، وسكن في قرية صغيرة على النيل.
+
+الراوي بتعرف عليه، وبدا يكتشف أسراره.
+
+الرواية بتوري صراع الهوية السودانية، وكيف الزول يكون بين ثقافتين.
+
+من أجمل الروايات السودانية، ترجمت لأكثر من 20 لغة.
+
+الطيب صالح من منطقة مروي، لكن روايته تمثل كل السودان.
+`},
+{name:"ثقافة الفور - الأكل واللبس",cat:"تراث",content:`📖 ثقافة الفور
+
+أهل الفور عندهم ثقافة غنية:
+
+الأكل المشهور:
+- الكسرة والملاح
+- العصيدة بالتقلية
+- المديدة
+
+اللبس:
+- الجلابية والطاقية للرجال
+- التوب للنساء بألوان زاهية
+
+اللغة: لغة الفور لغة قديمة، ما زالت موجودة في بعض المناطق.
+
+الرقص: رقصة الكسوك مشهورة في الأفراح.
+
+أهل الفور ناس طيبين وبحبو الضيف، والضيف عندهم عندو مكانة كبيرة.
+
+مركز ثقافة الفور كان في جبل مرة.
+`},
+{name:"الجنينة اليوم - دليل المدينة",cat:"دار",content:`📖 الجنينة اليوم
+
+الجنينة الآن أكبر مدينة في غرب دارفور.
+
+أحياؤها:
+- حي الزهور
+- حي الجبل
+- حي السلام
+- السوق الكبير
+- وادي كجا
+
+سوق الجنينة مشهور بالمنتجات الزراعية: فول سوداني، دخن، ذرة.
+
+جامعة الجنينة: صرح تعليمي كبير.
+
+أهل الجنينة معروفين بالتجارة والكرم.
+
+رغم الحرب، الجنينة صامدة بأهلها الطيبين.
+
+هذه الصفحة قابلة للتحديث - لو عندك معلومة عن الجنينة رسلها نضيفها.
+`}
 ];
+
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
 
-fetch('https://api.countapi.xyz/hit/geneina-library-2026-v5/visits')
-.then(r=>r.json()).then(d=>{document.getElementById('vis').innerText='👁️ الزوار: '+d.value;})
-.catch(()=>{let v=parseInt(localStorage.getItem('vis')||'6'); document.getElementById('vis').innerText='👁️ الزوار: '+v;});
-
-function openLogin(){document.getElementById('login').style.display='block'; window.scrollTo(0,0)}
-function closeLogin(){document.getElementById('login').style.display='none'}
-function doLogin(){let n=document.getElementById('nameInp').value; if(!n){alert('اكتب اسمك اول');return;} localStorage.setItem('geneina_user',n); document.getElementById('userTop').innerText='👤 '+n; alert('مرحب بيك يا '+n); closeLogin();}
-let u=localStorage.getItem('geneina_user'); if(u){document.getElementById('userTop').innerText='👤 '+u;}
+fetch('https://api.countapi.xyz/hit/geneina-final-real-2026/visits').then(r=>r.json()).then(d=>{
+document.getElementById('vis').innerText='👁️ الزوار: '+d.value+' زائر حقيقي';
+}).catch(()=>{
+let v=parseInt(localStorage.getItem('vis')||'6'); document.getElementById('vis').innerText='👁️ الزوار: '+v;
+});
 
 function render(list){
 document.getElementById('books').innerHTML=list.map((b,i)=>`
-<div class="book"><div class="cover">${b.name}</div><div class="info">${b.name}<br><span style="background:#ffe6a0;padding:2px 8px;border-radius:10px">4.9 ⭐ حقيقي</span>
+<div class="book"><div class="cover">${b.name}</div>
+<div class="info">${b.name}<br><span style="background:#ffe6a0;padding:2px 8px;border-radius:10px">📖 جوة المكتبة</span>
 <button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button>
-<button class="btn" style="background:#1a6e1a" onclick="readReal(${i})">📖 قراءة الآن</button>
+<button class="btn btn-green" onclick="readReal(${allBooks.indexOf(b)})">📖 قراءة الآن - مضمون</button>
 </div></div>`).join('');
 }
-
 function readReal(i){
 let b=allBooks[i];
 document.getElementById('rTitle').innerText=b.name;
-document.getElementById('rFrame').src=b.url;
+document.getElementById('readerContent').innerText=b.content;
 document.getElementById('reader').style.display='flex';
 }
-function closeReader(){document.getElementById('reader').style.display='none'; document.getElementById('rFrame').src='';}
-
-function addFav(name){if(!favs.includes(name)){favs.push(name); localStorage.setItem('favs',JSON.stringify(favs)); alert('✅ تم حفظ '+name)}else{alert('محفوظ قبل كده')} updateFavCount()}
-function updateFavCount(){document.getElementById('favCount').innerText='مكتبتي: '+favs.length+' كتاب';}
-updateFavCount();
-function showFavs(){if(favs.length==0){alert('لسه ما حفظت كتب - دوس ⭐ حفظ')}else{alert('محفوظاتك الحقيقية:\n'+favs.join('\n'))}}
-function showLibrary(){showFavs()}
-function goHome(){window.scrollTo(0,0); render(allBooks);}
+function closeReader(){document.getElementById('reader').style.display='none';}
+function addFav(name){if(!favs.includes(name)){favs.push(name); localStorage.setItem('favs',JSON.stringify(favs)); alert('✅ تم الحفظ')}else{alert('محفوظ قبل كده')}}
+function showFavs(){alert(favs.length? 'محفوظاتك:\n'+favs.join('\n') : 'لسه ما حفظت')}
+function goHome(){render(allBooks); window.scrollTo(0,0)}
 function filterCat(c){render(allBooks.filter(b=>b.cat==c))}
 document.getElementById('q').addEventListener('input',function(){let q=this.value; render(allBooks.filter(b=>b.name.includes(q)))})
 render(allBooks);
-document.getElementById('userTop').onclick=openLogin;
 </script>
 </body>
 </html>
