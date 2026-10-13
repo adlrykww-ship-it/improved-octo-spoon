@@ -2,71 +2,100 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة الرقمية</title>
+<title>مكتبة الجنينة</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@800&display=swap');
 *{font-family:'Tajawal',sans-serif;box-sizing:border-box}
-body{margin:0;background:#2b1a0e;color:#f5e6c8}
-.header{background:#221208;padding:15px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #c9a86a}
-.header h1{margin:0;color:#f9e4a6;font-size:19px}
-.search{margin:12px;background:#3d2a16;border:2px solid #c9a86a;border-radius:30px;padding:12px;display:flex;gap:8px}
+body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
+.top{background:#1a0e05;padding:8px 12px;display:flex;justify-content:space-between;font-size:13px}
+.head{background:#221208;padding:14px;text-align:center;border-bottom:2px solid #c9a86a}
+.search{margin:12px;background:#3d2a16;border:2px solid #c9a86a;border-radius:30px;padding:12px;display:flex}
 .search input{flex:1;background:transparent;border:0;color:#fff;outline:none;text-align:right}
-.mapBox{margin:12px;background:#3d2a16;border-radius:15px;overflow:hidden;border:1px solid #c9a86a;position:relative;height:150px;background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/West_Darfur_in_Sudan.svg/500px-West_Darfur_in_Sudan.svg.png') center/cover}
-.mapLabel{position:absolute;top:10px;right:10px;background:#221208cc;padding:8px 12px;border-radius:10px;font-size:13px}
-.sectionTitle{display:flex;justify-content:space-between;padding:15px 12px 8px;font-weight:800;color:#f9e4a6}
+.map{margin:12px;height:140px;background:linear-gradient(90deg,#5d4037,#8d6e63);border-radius:15px;display:flex;align-items:center;justify-content:center;border:1px solid #c9a86a}
+.title{display:flex;justify-content:space-between;padding:14px 12px 8px;color:#f9e4a6;font-weight:800}
 .cats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 12px}
-.cat{background:linear-gradient(180deg,#3d2a16,#221208);border:1px solid #c9a86a;border-radius:15px;padding:15px;text-align:center}
+.cat{background:#3d2a16;border:1px solid #c9a86a;border-radius:15px;padding:15px;text-align:center;cursor:pointer}
 .books{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px}
 .book{background:#fff7e8;border-radius:15px;overflow:hidden;color:#221208}
-.book .cover{height:160px;background:linear-gradient(135deg,#4a2c16,#8d6e63);display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800}
-.book .info{padding:8px;text-align:center;font-size:12px}
-.badge{background:#ffe6a0;padding:3px 8px;border-radius:10px;font-size:11px}
-.btn{display:block;background:#221208;color:#ffd54f;text-align:center;padding:7px;border-radius:8px;text-decoration:none;margin-top:5px}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0}
-.bottom div{text-align:center;font-size:11px;color:#f9e4a6}
-.topStats{display:flex;justify-content:space-between;padding:8px 12px;background:#1a0e05;font-size:12px}
+.cover{height:150px;background:#4a2c16;display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800}
+.info{padding:8px;text-align:center;font-size:12px}
+.btn{background:#221208;color:#ffd54f;padding:8px;border-radius:8px;display:block;text-align:center;margin-top:6px;cursor:pointer;border:none;width:100%}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0;z-index:99}
+.bottom div{cursor:pointer;text-align:center;font-size:11px;color:#f9e4a6;padding:5px}
+#login{margin:12px;background:#fff7e8;color:#000;padding:15px;border-radius:12px;display:none}
 </style>
 </head>
 <body>
-<div class="topStats"><span id="vis">👁️ الزوار: 0</span><span id="user" onclick="document.getElementById('login').style.display='block'">👤 حسابي</span></div>
-<div class="header"><h1>📚 مكتبة الجنينة الرقمية</h1><span>🔔</span></div>
-<div class="search"><span>🔍</span><input id="q" placeholder="ابحث عن كتاب، مؤلف، موضوع..." oninput="filterBooks()"><span>☰</span></div>
+<div class="top"><span id="vis">👁️ الزوار: 0</span><span id="userTop">👤 حسابي</span></div>
+<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة الرقمية</h2></div>
+<div class="search"><span>🔍</span><input id="q" placeholder="ابحث..."><span>☰</span></div>
 
-<div id="login" style="display:none;margin:12px;background:#fff7e8;color:#000;padding:15px;border-radius:12px">
-<input id="nameInp" placeholder="اسمك" style="width:100%;padding:10px;border-radius:8px;border:1px solid #c9a86a">
-<button class="btn" onclick="saveUser()" style="width:100%;margin-top:8px">دخول</button>
-<p id="favCount">مكتبتي: 0</p>
+<div id="login">
+<h3 style="margin:0 0 10px">حسابي</h3>
+<input id="nameInp" placeholder="اكتب اسمك" style="width:100%;padding:10px;border-radius:8px;border:1px solid #c9a86a">
+<button class="btn" onclick="doLogin()">دخول</button>
+<button class="btn" style="background:#ccc;color:#000" onclick="closeLogin()">قفل</button>
+<p id="favCount"></p>
 </div>
 
-<div class="mapBox"><div class="mapLabel">📍 موقعك — الجنينة، غرب دارفور<br>West Darfur</div></div>
+<div class="map">📍 الجنينة - غرب دارفور | West Darfur</div>
 
-<div class="sectionTitle"><span>عرض الكل</span><span>أقسام دارفور →</span></div>
+<div class="title"><span>عرض الكل</span><span>→ أقسام دارفور</span></div>
 <div class="cats">
-<div class="cat">🏔️<br>التراث الشفهي<br><small>حكايات وأمثال</small></div>
-<div class="cat">📖<br>الأدب الدارفوري<br><small>قصص وروايات</small></div>
-<div class="cat">🇸🇩<br>دار مساليت<br><small>تاريخ وتراث</small></div>
+<div class="cat" onclick="filterCat('تراث')">التراث الشفهي<br><small>حكايات وأمثال</small></div>
+<div class="cat" onclick="filterCat('أدب')">الأدب الدارفوري<br><small>قصص وروايات</small></div>
+<div class="cat" onclick="filterCat('دار')">دار مساليت<br><small>تاريخ وتراث</small></div>
 </div>
 
-<div class="sectionTitle"><span>عرض الكل</span><span>كتب مميزة →</span></div>
+<div class="title"><span>عرض الكل</span><span>→ كتب مميزة</span></div>
 <div class="books" id="books"></div>
 
-<div style="height:80px"></div>
 <div class="bottom">
-<div>👤<br>حسابي</div><div>🔖<br>المحفوظات</div><div>⊞<br>الأقسام</div><div>📚<br>مكتبتي</div><div>🏠<br>الرئيسية</div>
+<div onclick="openLogin()">👤<br>حسابي</div>
+<div onclick="showFavs()">🔖<br>المحفوظات</div>
+<div onclick="document.getElementById('q').focus()">⊞<br>الأقسام</div>
+<div onclick="showLibrary()">📚<br>مكتبتي</div>
+<div onclick="goHome()">🏠<br>الرئيسية</div>
 </div>
 
 <script>
-let allBooks=["تاريخ غرب دارفور - د. فاطمة علي","حكايات دارفور - د. أحمد محمود","الأمثال الدارفورية - 120 صفحة","سلطنة دارفور العظيمة","تاريخ دارفور السياسي","موسم الهجرة إلى الشمال"];
+let allBooks=[
+{name:"تاريخ غرب دارفور - د. فاطمة علي",cat:"دار"},
+{name:"حكايات دارفور - د. أحمد محمود",cat:"تراث"},
+{name:"الأمثال الدارفورية",cat:"تراث"},
+{name:"سلطنة دارفور العظيمة",cat:"دار"},
+{name:"موسم الهجرة إلى الشمال",cat:"أدب"},
+{name:"ثقافة الفور",cat:"تراث"}
+];
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
 let visits=localStorage.getItem('vis')||0; visits=parseInt(visits)+1; localStorage.setItem('vis',visits);
 document.getElementById('vis').innerText='👁️ الزوار: '+visits;
-document.getElementById('favCount').innerText='مكتبتي: '+favs.length;
-let u=localStorage.getItem('geneina_user'); if(u) document.getElementById('user').innerText='👤 '+u;
-function saveUser(){let n=document.getElementById('nameInp').value; if(n){localStorage.setItem('geneina_user',n); document.getElementById('user').innerText='👤 '+n; document.getElementById('login').style.display='none'}}
-function render(list){document.getElementById('books').innerHTML=list.map(b=>`<div class=book><div class=cover>${b}</div><div class=info>${b}<br><span class=badge>4.9 ⭐</span><a class=btn onclick="addFav('${b}')">⭐ حفظ</a><a class=btn href="https://archive.org/search?query=${encodeURIComponent(b)}" target=_blank>قراءة الآن</a></div></div>`).join('')}
-function addFav(b){if(!favs.includes(b)){favs.push(b); localStorage.setItem('favs',JSON.stringify(favs)); alert('تم الحفظ في مكتبتي'); document.getElementById('favCount').innerText='مكتبتي: '+favs.length;}}
-function filterBooks(){let q=document.getElementById('q').value; render(allBooks.filter(x=>x.includes(q)))}
+
+function openLogin(){document.getElementById('login').style.display='block'; window.scrollTo(0,0)}
+function closeLogin(){document.getElementById('login').style.display='none'}
+function doLogin(){let n=document.getElementById('nameInp').value; if(!n){alert('اكتب اسمك اول');return;} localStorage.setItem('geneina_user',n); document.getElementById('userTop').innerText='👤 '+n; alert('مرحب بيك يا '+n); closeLogin();}
+let u=localStorage.getItem('geneina_user'); if(u){document.getElementById('userTop').innerText='👤 '+u;}
+
+function render(list){
+document.getElementById('books').innerHTML=list.map(b=>`
+<div class="book"><div class="cover">${b.name}</div><div class="info">${b.name}<br><span style="background:#ffe6a0;padding:2px 8px;border-radius:10px">4.9 ⭐</span>
+<button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button>
+<button class="btn" onclick="readBook('${b.name}')">📖 قراءة الآن</button>
+</div></div>`).join('');
+}
+
+function addFav(name){if(!favs.includes(name)){favs.push(name); localStorage.setItem('favs',JSON.stringify(favs)); alert('✅ تم حفظ '+name)}else{alert('محفوظ قبل كده')} updateFavCount()}
+function updateFavCount(){document.getElementById('favCount').innerText='مكتبتي: '+favs.length+' كتاب';}
+updateFavCount();
+function readBook(name){window.open('https://archive.org/search?query='+encodeURIComponent(name),'_blank')}
+function showFavs(){if(favs.length==0){alert('لسه ما حفظت كتب')}else{alert('محفوظاتك:\n'+favs.join('\n'))}}
+function showLibrary(){showFavs()}
+function goHome(){window.scrollTo(0,0); render(allBooks);}
+function filterCat(c){render(allBooks.filter(b=>b.cat==c))}
+document.getElementById('q').addEventListener('input',function(){let q=this.value; render(allBooks.filter(b=>b.name.includes(q)))})
+
 render(allBooks);
+document.getElementById('userTop').onclick=openLogin;
 </script>
 </body>
   </html>
