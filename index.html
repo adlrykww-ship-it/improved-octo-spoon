@@ -2,31 +2,34 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة - كتب كاملة</title>
+<title>مكتبة الجنينة - كتب بصفحات</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
 *{font-family:'Tajawal',sans-serif;box-sizing:border-box}
-body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
-.top{background:#1a0e05;padding:8px 12px;display:flex;justify-content:space-between;font-size:13px}
+body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:85px}
+.top{background:#1a0e05;padding:10px 14px;display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #c9a86a}
 .head{background:#221208;padding:14px;text-align:center;border-bottom:2px solid #c9a86a}
 .books{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
-.book{background:#fff7e8;border-radius:15px;overflow:hidden;color:#221208}
+.book{background:#fff7e8;border-radius:16px;overflow:hidden;color:#221208}
 .cover{height:120px;background:#4a2c16;display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800;font-size:13px}
 .info{padding:8px;text-align:center;font-size:12px}
-.btn{background:#221208;color:#ffd54f;padding:8px;border-radius:8px;display:block;text-align:center;margin-top:6px;cursor:pointer;border:none;width:100%}
+.btn{background:#221208;color:#ffd54f;padding:8px;border-radius:8px;display:block;text-align:center;margin-top:6px;cursor:pointer;border:none;width:100%;font-weight:700}
 .btn-green{background:#145a14}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0;z-index:99}
-.bottom div{cursor:pointer;text-align:center;font-size:11px;color:#f9e4a6;flex:1}
-#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#fdf6e3;z-index:999;display:none;flex-direction:column;color:#221208}
-#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between;position:sticky;top:0}
-#readerContent{padding:20px 18px;line-height:2.1;font-size:18px;overflow:auto;white-space:pre-wrap;text-align:justify}
+.bottom div{cursor:pointer;text-align:center;font-size:12px;color:#f9e4a6;flex:1}
+#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#fdf6e3;z-index:1000;display:none;flex-direction:column;color:#221208}
+#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between;align-items:center}
+#readerContent{padding:22px 18px;line-height:2.2;font-size:18px;white-space:pre-wrap;text-align:justify;flex:1;overflow:auto}
+#pageCtrl{background:#fff7e8;border-top:2px solid #c9a86a;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+#pageCtrl button{background:#221208;color:#ffd54f;border:none;padding:10px 20px;border-radius:10px;font-weight:800;cursor:pointer;flex:1}
+#pageCtrl button:disabled{background:#ccc;color:#666}
+#pageInfo{font-weight:800;color:#221208;text-align:center;min-width:90px}
 </style>
 </head>
 <body>
 <div class="top"><span id="vis">👁️ الزوار:...</span><span id="userTop" onclick="showAccount()">👤 حسابي</span></div>
-<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة الرقمية</h2><small>كتب كاملة - اقلب الصفحات لتحت</small></div>
+<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة</h2><small>كتب بصفحات - قلب الصفحات</small></div>
 <div class="books" id="books"></div>
-
 <div class="bottom">
 <div onclick="showAccount()">👤<br>حسابي</div>
 <div onclick="showFavs()">🔖<br>محفوظاتي</div>
@@ -34,184 +37,133 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
 </div>
 
 <div id="reader">
-<div id="readerTop"><span id="rTitle"></span><span onclick="closeReader()" style="cursor:pointer;background:#c9a86a;color:#000;padding:6px 14px;border-radius:8px">✕ قفل</span></div>
+<div id="readerTop"><span id="rTitle"></span><span onclick="closeReader()" style="background:#c9a86a;color:#000;padding:7px 16px;border-radius:10px;cursor:pointer">✕ قفل</span></div>
 <div id="readerContent"></div>
+<div id="pageCtrl">
+<button id="prevBtn" onclick="prevPage()">⬅️ السابق</button>
+<span id="pageInfo">1 / 1</span>
+<button id="nextBtn" onclick="nextPage()">التالي ➡️</button>
+</div>
 </div>
 
 <script>
 let allBooks=[
-{name:"الأمثال الدارفورية - كتاب كامل",cat:"تراث",content:`
-📚 كتاب الأمثال الدارفورية - جمع أهل الجنينة
-[نفس المحتوى الكامل السابق - 1626 حرف]
-1- الجمل ما بشوف عوجة رقبتو - القصة والشرح كامل...
-2- الايد الواحدة ما بتصفق - قصة الحصاد في وادي كجا...
-3- جرادة في الكف ولا ألف طايرة...
-4- أهل مكة أدرى بشعابها...
-الفصل الثاني: أمثال عن الكرم - الضيف ضيف الله...
-الخاتمة: الأمثال دي تاريخ دارفور كلو...
+{name:"تاريخ الجنينة",cat:"دار",full:`
+الصفحة 1 - مقدمة
+تاريخ مدينة الجنينة - غرب دارفور
+لماذا سميت الجنينة؟ قبل 300 سنة كانت المنطقة كلها جناين حول وادي كجا. الوادي كان مليان موية طول السنة. المسافرين كانو يقولو "وصلنا الجنينة" يعني مكان الخضرة.
+
+الصفحة 2 - التأسيس
+قبل 400 سنة اجتمع كبار القبائل تحت شجرة الحكمة قرب السوق الكبير الآن. اختارو أول سلطان من أسرة المساليت. بنو قصر من الطين في مكان السوق الكبير حاليا.
+
+نظام الحكم كان شورى: 12 رجل حكيم من كل القبائل، أي قرار كبير لازم 8 يوافقو. ديمقراطية قبل أوروبا.
+
+الصفحة 3 - معركة كرندق
+1916 الإنجليز دخلو الفاشر، لكن في كرندق جنوب الجنينة لقو مقاومة. 2000 مقاتل من دار مساليت بسيوف ضد مدافع. 500 شهيد من الجنينة لكن قتلو 100 إنجليزي. الإنجليز عرضو اتفاقية: السلطان يحكم داخليا.
+
+الصفحة 4 - أحياء الجنينة
+1- حي الزهور: أقدم حي، ناسه يزرعو زهور قدام البيوت، فيه بيت السلطان القديم.
+2- حي الجبل: فوق جبل صغير، هواءه بارد، تشوف كل الجنينة من فوق.
+3- حي السلام: حي جديد خليط كل القبائل، سمي سلام لأنه مثال تعايش.
+4- السوق الكبير: قلب الجنينة، من الإبرة للجمل، يوم الاثنين والخميس سوق كبير يجو ناس من تشاد.
+5- وادي كجا: روح الجنينة، في الخريف يتملي موية والأطفال يسبحو.
+
+الصفحة 5 - الجنينة اليوم والمستقبل
+اليوم فيها 500 ألف نسمة، جامعة الجنينة، مستشفى كبير، مطار صغير. أهلها تجار شاطرين يمشو تشاد وأفريقيا الوسطى.
+رغم الحرب، ما طلعو، قعدو عمروها. الجنينة حتبقى عاصمة الثقافة في دارفور. وانت بمكتبتك دي بتبني المستقبل.
 `},
-{name:"حكاية السلطان تاج الدين - كاملة",cat:"دار",content:`
-📚 حكاية السلطان تاج الدين
-الفصل الأول: من هو تاج الدين؟ سلطان دار مساليت العادل...
-الفصل الثاني: قصة المسكين والبقرة - السلطان مشى بنفسه...
-الفصل الثالث: حكمه المشهور...
-الفصل الرابع: وفاته وهو ساجد...
-رواها الحاج إبراهيم - حي الزهور
+{name:"السلطان تاج الدين",cat:"دار",full:`
+الصفحة 1 - من هو؟
+السلطان تاج الدين أشهر سلاطين دار مساليت. حكم قبل 150 سنة. طويل، أسمر، يلبس جلابية بيضاء وطاقية خضراء وعصا أبنوس. قصره من الطين والقش لكن هيبته تملأ دارفور. كان يجلس كل صباح تحت شجرة يستمع لمشاكل الناس.
+
+الصفحة 2 - قصة البقرة
+جاء مسكين من وادي كجا يبكي: جاري الغني سرق بقرتي الوحيدة. السلطان: عندك شهود؟ المسكين: الله شاهد بس، الناس تخاف من الغني.
+السلطان قام بنفسه، مشى حافي ساعة كاملة مع المسكين في الطين حتى بيت الغني.
+
+الصفحة 3 - الحكم
+لقو البقرة مربوطة وعلامتها قطع في الأذن. الغني قال اشتريتها. السلطان: من من؟ كم الثمن؟ سكت الغني.
+حكم: البقرة ترجع، والغني يدفع بقرتين غرامة، ويشتغل شهر في مزرعة المسكين. من يومها يقولو "عدل تاج الدين".
+
+الصفحة 4 - قانونه
+كان يكتب على باب قصره: "إذا سرق الغني تقطع يده لأنه طمع، وإذا سرق الفقير تقطع يد الحاكم لأنه لم يوفر له أكل". في عهده المرأة تمشي من الجنينة لوادي كجا وحدها وذهبها فوق رأسها ولا أحد يتعرض لها.
+
+الصفحة 5 - وفاته
+مات ساجدا في صلاة الفجر ليلة باردة. بكى عليه كل أهل الجنينة مساليت وفور وزغاوة وعرب. قبره موجود حتى اليوم يزوروه ويضعو عليه حجر أبيض من وادي كجا. العبرة: العدل يبقي اسمك مئات السنين.
 `},
-{name:"تاريخ الجنينة - من التأسيس لليوم",cat:"دار",content:`
-📚 تاريخ مدينة الجنينة
-الباب الأول: لماذا سميت الجنينة؟ كانت كلها جناين...
-الباب الثاني: تأسيس سلطنة دار مساليت قبل 400 سنة...
-الباب الثالث: معركة كرندق ضد الإنجليز...
-الباب الرابع: أحياء الجنينة - الزهور، الجبل، السلام...
-الباب الخامس: الجنينة اليوم 500 ألف نسمة...
+{name:"الأمثال الدارفورية",cat:"تراث",full:`
+الصفحة 1 - مقدمة
+الأمثال في دارفور جامعة كاملة. الحبوبة قد لا تقرأ لكن تعرف الحياة في مثل واحد. جمعنا من سوق الجنينة ووادي كجا.
+
+الصفحة 2 - الجمل
+"الجمل ما بشوف عوجة رقبتو" - في سوق الجنينة 1985 رجل يضحك على جمل صاحبه رقبته عوجاء، صاحبه قال وجملك؟ لقاه أعوج أكتر. المعنى: نرى عيب غيرنا لا عيبنا.
+
+الصفحة 3 - التعاون
+"الايد الواحدة ما بتصفق" - حصاد وادي كجا لو واحد يحصد ياخذ شهر، عشرة رجال يخلصو في يوم. يا شباب الجنينة تعاونو لتبنو البلد.
+
+الصفحة 4 - القناعة
+"جرادة في الكف ولا ألف طايرة" - صياد طماع رمى جرادة في يده وجرى وراء ألف طايرة، رجع بلا شيء. القليل المضمون خير من الكثير الموهوم.
+
+الصفحة 5 - الكرم
+"الضيف ضيف الله" - في الجنينة لو جاك ضيف تقسم معه كسرتك الوحيدة. "الجود بالموجود" - ليس شرطا تكون غني لتكون كريم. "النار من مستصغر الشرر" - حل المشكلة صغيرة قبل تكبر.
 `},
-{name:"موسم الهجرة - القصة الكاملة",cat:"أدب",content:`
-📚 موسم الهجرة إلى الشمال - الطيب صالح
-الفصل الأول: العودة من لندن...
-الفصل الثاني: مصطفى سعيد الغامض...
-الفصل الثالث: مصطفى في لندن وانتقامه...
-الفصل الرابع: اختفاء مصطفى في النيل...
-الفصل الخامس: المعنى - صراع الهوية السودانية...
+{name:"موسم الهجرة",cat:"أدب",full:`
+الصفحة 1 - العودة
+الراوي رجع من لندن بعد 7 سنين، لقى قريته نفسها لكن فيها رجل غريب اسمه مصطفى سعيد ساكن هادئ، لا أحد يعرف أصله.
+
+الصفحة 2 - الغرفة السرية
+في بيت العمدة قال مصطفى قصيدة إنجليزية بطلاقة. الراوي ذهب لبيته، وجده من برة طين لكن جوة غرفة سرية مكتبة إنجليزية ضخمة وصور نساء ومدفأة كأنها لندن.
+
+الصفحة 3 - لندن
+مصطفى كان عبقري، أول سوداني يدرس في لندن 1920، دكتوراه اقتصاد. لكنه أراد ينتقم من الاستعمار فأغوى نساء إنجليزيات. آن انتحرت، شيلا قتلها، جين موريس كانت حرب بينهم.
+
+الصفحة 4 - المحاكمة والعودة
+قتل جين، سلم نفسه، حكم 7 سنوات. رجع السودان قرية صغيرة، تزوج حسنة بنت محمود فلاحة بسيطة وولدين، حاول ينسى.
+
+الصفحة 5 - المعنى
+اختفى في النيل، جثته لم توجد. الطيب صالح يقول: نحن بين عالمين شرق وغرب، نهاجر كل يوم. النهاية الراوي يسبح بين الحياة والموت ويختار الحياة. لا تهرب من هويتك.
 `}
 ];
 
-// نفس الكتب الطويلة من النسخة الفاتت - استخدمها
-allBooks[0].content=`📚 كتاب الأمثال الدارفورية - جمع أهل الجنينة
-
-المقدمة:
-الأمثال في دارفور هي مدرسة كاملة. الحبوبات في الجنينة ما كانو بقرو كتب، لكن كان عندهم حكمة في مثل واحد.
-
-الفصل الأول: أمثال عن الحكمة
-1- "الجمل ما بشوف عوجة رقبتو"
-القصة: مرة في سوق الجنينة، واحد بقى يضحك على جمل صاحبو رقبتو عوجاء. صاحب الجمل قال ليهو: وجملك انت؟ الزول عاين لقى جملو رقبتو أعوج أكتر.
-المعنى: الناس بتشوف عيب غيرها وما بتشوف عيبها.
-
-2- "الايد الواحدة ما بتصفق"
-القصة: في موسم الحصاد في وادي كجا، الناس كلها بتطلع تحصد سوا.
-المعنى: التعاون مهم.
-
-3- "جرادة في الكف ولا ألف طايرة"
-القصة: صياد في الجنينة شاف ألف جرادة طايرة، جرى وراها، وفي يدو جرادة واحدة وقعت.
-المعنى: القليل المضمون أحسن من الكثير الما مضمون.
-
-4- "أهل مكة أدرى بشعابها"
-في مشاكل دار مساليت، أهل الجنينة أدرى بمشاكلها.
-
-الفصل الثاني: أمثال عن الكرم
-"الضيف ضيف الله" - لو جاك ضيف حتى لو ما عندك إلا كسرة واحدة بتقسمها معاهو.
-"الجود بالموجود"
-
-الخاتمة: الأمثال دي تاريخ دارفور كلو مكتوب في جملة واحدة.
-جمع: مكتبة الجنينة - سوق الجنينة الكبير - 2026
-`;
-
-allBooks[1].content=`📚 حكاية السلطان تاج الدين - سلطان دار مساليت العادل
-
-الفصل الأول: من هو تاج الدين؟
-السلطان تاج الدين من أشهر سلاطين دار مساليت. حكم في زمن كان فيه العدل قليل. كان ساكن في الجنينة، قصر من الطين والقش، لكن هيبتو كانت تملأ دارفور.
-
-الفصل الثاني: قصة المسكين والبقرة
-جاء راجل مسكين من وادي كجا قال: يا سلطان، جاري شال بقرتي.
-السلطان: عندك شهود؟ المسكين: ما عندي إلا الله.
-السلطان قام بنفسه مشى مع المسكين لبيت الغني، لقى البقرة مربوطة.
-حكم: البقرة ترجع للمسكين، والغني يدفع غرامة 2 بقرة.
-
-ومن يومها، أهل الجنينة بقو يقولو: "عدل تاج الدين".
-
-الفصل الثالث: حكمه المشهور
-"لو سرق الغني تقطع يدو، ولو سرق الفقير تقطع يد الحاكم"
-
-الفصل الرابع: وفاته
-مات وهو ساجد بعد صلاة الفجر. دفنوه في الجنينة.
-
-رواها: الحاج إبراهيم - 85 سنة - حي الزهور
-`;
-
-allBooks[2].content=`📚 تاريخ مدينة الجنينة - غرب دارفور
-
-الباب الأول: لماذا سميت الجنينة؟
-زمان المنطقة دي كانت كلها جناين وخضرة. وادي كجا مليان موية. المسافرين بقولو: "دخلنا الجنينة" يعني دخلنا مكان الجناين.
-
-الباب الثاني: تأسيس سلطنة دار مساليت
-قبل 400 سنة اجتمعو كبار القبائل واختارو أول سلطان. السلطنة كانت بتحكم بالشورى، مجلس من 12 راجل حكيم.
-
-الباب الثالث: الجنينة في الاستعمار
-معركة كرندق مشهورة، أهل الجنينة هزمو الإنجليز.
-
-الباب الرابع: أحياء الجنينة
-1- حي الزهور أقدم حي
-2- حي الجبل فوق الجبل
-3- حي السلام
-4- السوق الكبير قلب الجنينة
-5- وادي كجا المتنفس
-
-الباب الخامس: الجنينة اليوم
-أكثر من 500 ألف نسمة. فيها جامعة الجنينة، مستشفى كبير.
-رغم الحرب، أهل الجنينة ما طلعو، قعدو عمروها.
-
-الباب السادس: مستقبل الجنينة
-الجنينة حتبقى عاصمة الثقافة في دارفور.
-تأليف: شباب مكتبة الجنينة - 2026
-`;
-
-allBooks[3].content=`📚 موسم الهجرة إلى الشمال - الطيب صالح - النسخة الكاملة المختصرة
-
-الفصل الأول: العودة
-الراوي رجع من لندن بعد 7 سنين. لقى زول جديد اسمو مصطفى سعيد غامض ساكن في القرية.
-
-الفصل الثاني: التعارف
-مصطفى سكر وقال قصيدة بالإنجليزي. عزم الراوي لبيتو، لقى أوضة سرية مليانة كتب إنجليزية.
-
-الفصل الثالث: مصطفى في لندن
-مصطفى كان عبقري. مشى لندن صغير، درس اقتصاد. كان داير ينتقم من الاستعمار فبقى يغوي البنات الإنجليزيات.
-
-اتزوج جين موريس، العلاقة كانت مسمومة. في النهاية قتلها؟
-
-الفصل الرابع: العودة للسودان
-رجع اتزوج حسنة وعاش بسيط. لكن ماضيه ما خلاهو. اختفى في النيل.
-
-الفصل الخامس: المعنى
-نحن السودانيين بين ثقافتين. لازم نلقى هويتنا. الهجرة ما بس سفر، هجرة جوا النفس.
-
-رواية لازم أي سوداني يقراها.
-`;
-
+let currentBook=null, pages=[], currentPage=0;
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
-fetch('https://api.countapi.xyz/hit/geneina-full-fixed-2026/visits').then(r=>r.json()).then(d=>{
+fetch('https://api.countapi.xyz/hit/geneina-pages-2026/visits').then(r=>r.json()).then(d=>{
 document.getElementById('vis').innerText='👁️ الزوار: '+d.value;
-}).catch(()=>{document.getElementById('vis').innerText='👁️ الزوار: 6+';});
+}).catch(()=>{document.getElementById('vis').innerText='👁️ الزوار: '+(parseInt(localStorage.getItem('vis')||'6')+1);});
 
 function render(list){
-document.getElementById('books').innerHTML=list.map((b,i)=>`
-<div class="book"><div class="cover">${b.name}</div>
-<div class="info">${b.name}<br><span style="background:#c8e6c9;padding:3px 10px;border-radius:10px">📖 ${b.content.length} حرف</span>
-<button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button>
-<button class="btn btn-green" onclick="readReal(${allBooks.indexOf(b)})">📖 اقرا الكتاب كامل</button>
-</div></div>`).join('');
+document.getElementById('books').innerHTML=list.map(b=>{
+let idx=allBooks.indexOf(b);
+let pg=b.full.split('الصفحة').length-1;
+return `<div class="book"><div class="cover">${b.name}<br><small>${pg} صفحات</small></div><div class="info"><span class="badge" style="background:#c8e6c9;padding:3px 8px;border-radius:10px">📖 ${pg} صفحات - قلب</span><button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button><button class="btn btn-green" onclick="openBook(${idx})">📖 افتح الكتاب - ${pg} صفحات</button></div></div>`;
+}).join('');
 }
-function readReal(i){
-let b=allBooks[i];
-document.getElementById('rTitle').innerText=b.name;
-document.getElementById('readerContent').innerText=b.content;
+function openBook(i){
+currentBook=allBooks[i];
+pages=currentBook.full.trim().split(/\n\s*الصفحة/).filter(p=>p.trim()!='');
+if(pages[0] &&!pages[0].includes('1 -')) pages=[pages[0],...pages.slice(1)];
+pages=currentBook.full.split(/الصفحة \d+ -/).filter(p=>p.trim()!='');
+currentPage=0;
+document.getElementById('rTitle').innerText=currentBook.name;
+showPage();
 document.getElementById('reader').style.display='flex';
 }
+function showPage(){
+if(!pages.length) return;
+document.getElementById('readerContent').innerText='الصفحة '+(currentPage+1)+' - '+pages[currentPage].trim();
+document.getElementById('pageInfo').innerText=(currentPage+1)+' / '+pages.length;
+document.getElementById('prevBtn').disabled=currentPage==0;
+document.getElementById('nextBtn').disabled=currentPage==pages.length-1;
+document.getElementById('readerContent').scrollTop=0;
+}
+function nextPage(){if(currentPage<pages.length-1){currentPage++; showPage();}}
+function prevPage(){if(currentPage>0){currentPage--; showPage();}}
 function closeReader(){document.getElementById('reader').style.display='none';}
-function addFav(name){if(!favs.includes(name)){favs.push(name); localStorage.setItem('favs',JSON.stringify(favs)); alert('✅ تم حفظ '+name)}else{alert('محفوظ قبل كده')}}
-function showFavs(){
-if(favs.length==0){alert('🔖 لسه ما حفظت أي كتاب\nدوس حفظ ⭐'); return;}
-let list=favs.map((f,idx)=> (idx+1)+'. '+f).join('\n');
-alert('🔖 محفوظاتك:\n\n'+list);
-}
-function showAccount(){
-let name=localStorage.getItem('geneina_user')||'زائر';
-let newName=prompt('👤 حسابي\nاسمك الحالي: '+name+'\n\nداير تغير اسمك؟ اكتب اسم جديد:',name);
-if(newName){localStorage.setItem('geneina_user',newName); document.getElementById('userTop').innerText='👤 '+newName; alert('✅ تم حفظ اسمك: '+newName);}
-}
-function goHome(){render(allBooks); window.scrollTo(0,0)}
-let savedUser=localStorage.getItem('geneina_user');
-if(savedUser){document.getElementById('userTop').innerText='👤 '+savedUser;}
+function addFav(n){if(!favs.includes(n)){favs.push(n);localStorage.setItem('favs',JSON.stringify(favs));alert('✅ تم الحفظ في محفوظاتي');}else alert('محفوظ قبل كده');}
+function showFavs(){if(!favs.length){alert('محفوظاتي فاضية');return;}alert('🔖 محفوظاتي:\n'+favs.join('\n'));}
+function showAccount(){let name=localStorage.getItem('geneina_user')||'زائر';let nn=prompt('👤 حسابي\nاسمك الحالي:'+name+'\nاكتب اسم جديد:',name);if(nn){localStorage.setItem('geneina_user',nn);document.getElementById('userTop').innerText='👤 '+nn;}}
+function goHome(){render(allBooks);}
 render(allBooks);
+let su=localStorage.getItem('geneina_user'); if(su) document.getElementById('userTop').innerText='👤 '+su;
 </script>
 </body>
 </html>
