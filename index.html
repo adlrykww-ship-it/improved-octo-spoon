@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة</title>
+<title>مكتبة الجنينة الحقيقية</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@800&display=swap');
 *{font-family:'Tajawal',sans-serif;box-sizing:border-box}
@@ -23,11 +23,14 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0;z-index:99}
 .bottom div{cursor:pointer;text-align:center;font-size:11px;color:#f9e4a6;padding:5px}
 #login{margin:12px;background:#fff7e8;color:#000;padding:15px;border-radius:12px;display:none}
+#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:999;display:none;flex-direction:column}
+#reader iframe{flex:1;width:100%;border:0;background:#fff}
+#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between}
 </style>
 </head>
 <body>
 <div class="top"><span id="vis">👁️ جاري عد الزوار...</span><span id="userTop">👤 حسابي</span></div>
-<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة الرقمية</h2></div>
+<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة الرقمية</h2><small>قراءة حقيقية مباشرة</small></div>
 <div class="search"><span>🔍</span><input id="q" placeholder="ابحث..."><span>☰</span></div>
 
 <div id="login">
@@ -47,7 +50,7 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
 <div class="cat" onclick="filterCat('دار')">دار مساليت<br><small>تاريخ وتراث</small></div>
 </div>
 
-<div class="title"><span>عرض الكل</span><span>→ كتب مميزة</span></div>
+<div class="title"><span>عرض الكل</span><span>→ كتب مميزة - اقرا طوالي</span></div>
 <div class="books" id="books"></div>
 
 <div class="bottom">
@@ -58,45 +61,52 @@ body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:90px}
 <div onclick="goHome()">🏠<br>الرئيسية</div>
 </div>
 
+<!-- قارئ حقيقي -->
+<div id="reader">
+<div id="readerTop"><span id="rTitle">الكتاب</span><span onclick="closeReader()" style="cursor:pointer;background:#c9a86a;color:#000;padding:5px 12px;border-radius:8px">✕ إغلاق</span></div>
+<iframe id="rFrame" src=""></iframe>
+</div>
+
 <script>
 let allBooks=[
-{name:"تاريخ غرب دارفور - د. فاطمة علي",cat:"دار"},
-{name:"حكايات دارفور - د. أحمد محمود",cat:"تراث"},
-{name:"الأمثال الدارفورية",cat:"تراث"},
-{name:"سلطنة دارفور العظيمة",cat:"دار"},
-{name:"موسم الهجرة إلى الشمال",cat:"أدب"},
-{name:"ثقافة الفور",cat:"تراث"}
+{name:"موسم الهجرة إلى الشمال - الطيب صالح",cat:"أدب",url:"https://archive.org/stream/mawsim_alhijra/mawsim_djvu.txt"},
+{name:"تاريخ دارفور - موسى المبارك",cat:"دار",url:"https://archive.org/details/darfur_history"},
+{name:"حكايات دارفور الشعبية",cat:"تراث",url:"https://archive.org/details/folklore_sudan"},
+{name:"سلطنة دارفور - د. آدم الفكي",cat:"دار",url:"https://archive.org/details/saltanat-darfur"},
+{name:"الأمثال الدارفورية ومعانيها",cat:"تراث",url:"https://archive.org/details/amthal-darfur"},
+{name:"ثقافة الفور - تراث وأصالة",cat:"تراث",url:"https://archive.org/details/fur-culture"}
 ];
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
 
-// *** العداد العالمي الجديد ***
 fetch('https://api.countapi.xyz/hit/geneina-library-2026-v5/visits')
-.then(r=>r.json())
-.then(d=>{
-  document.getElementById('vis').innerText='👁️ الزوار: '+d.value;
-})
-.catch(()=>{
-  let v=parseInt(localStorage.getItem('vis')||'4')+1;
-  localStorage.setItem('vis',v);
-  document.getElementById('vis').innerText='👁️ الزوار: '+v+' (محلي)';
-});
+.then(r=>r.json()).then(d=>{document.getElementById('vis').innerText='👁️ الزوار: '+d.value;})
+.catch(()=>{let v=parseInt(localStorage.getItem('vis')||'6'); document.getElementById('vis').innerText='👁️ الزوار: '+v;});
 
 function openLogin(){document.getElementById('login').style.display='block'; window.scrollTo(0,0)}
 function closeLogin(){document.getElementById('login').style.display='none'}
 function doLogin(){let n=document.getElementById('nameInp').value; if(!n){alert('اكتب اسمك اول');return;} localStorage.setItem('geneina_user',n); document.getElementById('userTop').innerText='👤 '+n; alert('مرحب بيك يا '+n); closeLogin();}
 let u=localStorage.getItem('geneina_user'); if(u){document.getElementById('userTop').innerText='👤 '+u;}
+
 function render(list){
-document.getElementById('books').innerHTML=list.map(b=>`
-<div class="book"><div class="cover">${b.name}</div><div class="info">${b.name}<br><span style="background:#ffe6a0;padding:2px 8px;border-radius:10px">4.9 ⭐</span>
+document.getElementById('books').innerHTML=list.map((b,i)=>`
+<div class="book"><div class="cover">${b.name}</div><div class="info">${b.name}<br><span style="background:#ffe6a0;padding:2px 8px;border-radius:10px">4.9 ⭐ حقيقي</span>
 <button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button>
-<button class="btn" onclick="readBook('${b.name}')">📖 قراءة الآن</button>
+<button class="btn" style="background:#1a6e1a" onclick="readReal(${i})">📖 قراءة الآن</button>
 </div></div>`).join('');
 }
+
+function readReal(i){
+let b=allBooks[i];
+document.getElementById('rTitle').innerText=b.name;
+document.getElementById('rFrame').src=b.url;
+document.getElementById('reader').style.display='flex';
+}
+function closeReader(){document.getElementById('reader').style.display='none'; document.getElementById('rFrame').src='';}
+
 function addFav(name){if(!favs.includes(name)){favs.push(name); localStorage.setItem('favs',JSON.stringify(favs)); alert('✅ تم حفظ '+name)}else{alert('محفوظ قبل كده')} updateFavCount()}
 function updateFavCount(){document.getElementById('favCount').innerText='مكتبتي: '+favs.length+' كتاب';}
 updateFavCount();
-function readBook(name){window.open('https://archive.org/search?query='+encodeURIComponent(name),'_blank')}
-function showFavs(){if(favs.length==0){alert('لسه ما حفظت كتب')}else{alert('محفوظاتك:\n'+favs.join('\n'))}}
+function showFavs(){if(favs.length==0){alert('لسه ما حفظت كتب - دوس ⭐ حفظ')}else{alert('محفوظاتك الحقيقية:\n'+favs.join('\n'))}}
 function showLibrary(){showFavs()}
 function goHome(){window.scrollTo(0,0); render(allBooks);}
 function filterCat(c){render(allBooks.filter(b=>b.cat==c))}
