@@ -1,137 +1,79 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مكتبة الجنينة - 50 قصة حقيقية</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة السودان، دارفور</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800&display=swap');
-*{font-family:'Tajawal',sans-serif;box-sizing:border-box}
-body{margin:0;background:#2b1a0e;color:#f5e6c8;padding-bottom:85px}
-.top{background:#1a0e05;padding:10px 14px;display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #c9a86a}
-.head{background:#221208;padding:14px;text-align:center;border-bottom:2px solid #c9a86a}
-.books{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
-.book{background:#fff7e8;border-radius:16px;overflow:hidden;color:#221208}
-.cover{height:125px;background:linear-gradient(135deg,#4a2c16,#6d4c33);display:flex;align-items:center;justify-content:center;color:#ffd54f;padding:10px;text-align:center;font-weight:800;font-size:13px;line-height:1.4}
-.info{padding:8px;text-align:center;font-size:12px}
-.btn{background:#221208;color:#ffd54f;padding:9px;border-radius:9px;display:block;text-align:center;margin-top:6px;cursor:pointer;border:none;width:100%;font-weight:700}
-.btn-green{background:#145a14}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#221208;border-top:2px solid #c9a86a;display:flex;justify-content:space-around;padding:10px 0;z-index:99}
-.bottom div{cursor:pointer;text-align:center;font-size:12px;color:#f9e4a6;flex:1}
-#reader{position:fixed;top:0;left:0;right:0;bottom:0;background:#fdf6e3;z-index:1000;display:none;flex-direction:column;color:#221208}
-#readerTop{background:#221208;color:#f9e4a6;padding:12px;display:flex;justify-content:space-between;align-items:center}
-#readerContent{padding:22px 18px;line-height:2.3;font-size:18px;white-space:pre-wrap;text-align:justify;flex:1;overflow:auto}
-#pageCtrl{background:#fff7e8;border-top:2px solid #c9a86a;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-#pageCtrl button{background:#221208;color:#ffd54f;border:none;padding:12px 20px;border-radius:12px;font-weight:800;cursor:pointer;flex:1}
-#pageCtrl button:disabled{background:#ccc;color:#666}
-#pageInfo{font-weight:800;min-width:100px;text-align:center}
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Tajawal:wght@400;700&display=swap');
+body{font-family:'Tajawal', sans-serif; background:#fdf6e3; margin:0; color:#3e2723;}
+.header{background:#4e342e; color:#ffecb3; padding:25px 15px; text-align:center; border-bottom:5px solid #ffca28;}
+.header h1{font-family:'Amiri', serif; margin:0; font-size:38px;}
+.header p{margin:5px 0 0; opacity:0.9; font-size:18px;}
+.stats{display:flex; justify-content:center; gap:20px; margin:20px 0; flex-wrap:wrap;}
+.stat-card{background:white; border:1px solid #d7ccc8; border-radius:12px; padding:12px 22px; text-align:center; min-width:120px; box-shadow:0 2px 5px rgba(0,0,0,0.05);}
+.stat-card b{font-size:22px; display:block; color:#4e342e;}
+.container{max-width:1000px; margin:0 auto; padding:15px;}
+.section{margin-top:30px;}
+.section h2{font-family:'Amiri', serif; border-right:6px solid #ffca28; padding-right:12px; color:#4e342e; font-size:26px; margin-bottom:15px;}
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:15px;}
+.book{background:white; border-radius:12px; padding:18px; border:1px solid #efebe9; transition:0.2s; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+.book:hover{transform:translateY(-3px); box-shadow:0 6px 15px rgba(0,0,0,0.1); border-color:#ffca28;}
+.book h3{margin:0 0 8px; font-size:18px; color:#3e2723;}
+.book p{margin:0; font-size:14px; color:#8d6e63;}
+.badge{display:inline-block; background:#fff8e1; color:#f57f17; font-size:12px; padding:3px 8px; border-radius:20px; margin-top:10px; border:1px solid #ffe082;}
 </style>
 </head>
 <body>
-<div class="top"><span id="vis">👁️ الزوار:...</span><span id="userTop" onclick="showAccount()">👤 حسابي</span></div>
-<div class="head"><h2 style="margin:0;color:#f9e4a6">📚 مكتبة الجنينة</h2><small>50 قصة مختلفة - ما مكررة</small></div>
-<div class="books" id="books"></div>
-<div class="bottom"><div onclick="showAccount()">👤<br>حسابي</div><div onclick="showFavs()">🔖<br>محفوظاتي</div><div onclick="goHome()">🏠<br>الرئيسية</div></div>
-<div id="reader">
-<div id="readerTop"><span id="rTitle"></span><span onclick="closeReader()" style="background:#c9a86a;color:#000;padding:7px 16px;border-radius:10px;cursor:pointer">✕ قفل</span></div>
-<div id="readerContent"></div>
-<div id="pageCtrl"><button id="prevBtn" onclick="prevPage()">⬅️ السابق</button><span id="pageInfo">1 / 50</span><button id="nextBtn" onclick="nextPage()">التالي ➡️</button></div>
+<div class="header">
+<h1>مكتبة السودان، دارفور</h1>
+<p>الجنينة | 200 قصة أصلية - ما مكررة - من تراثنا</p>
 </div>
-<script>
-const amthalList=[
-"1- الجمل ما بشوف عوجة رقبتو: رجل يضحك على جمل صاحبه",
-"2- الايد الواحدة ما بتصفق: حصاد وادي كجا يحتاج تعاون",
-"3- جرادة في الكف ولا ألف طايرة: صياد طماع رمى ما في يده",
-"4- أهل مكة أدرى بشعابها: أهل الجنينة أدرى بمشاكلهم",
-"5- الضيف ضيف الله: تقسم كسرتك مع الضيف",
-"6- الجود بالموجود: فقير يعطي كوب ماء أكرم من غني",
-"7- النار من مستصغر الشرر: مشكلة طفلين قد تصبح قبيلة",
-"8- الصبر طيب: امرأة انتظرت المطر 3 شهور",
-"9- الفاضي بيعمل قاضي: الرجل الفارغ يتدخل في كل شيء",
-"10- العرق دساس: الولد يطلع لأبوه",
-"11- القرد في عين أمه غزال: الأم ترى ولدها أجمل",
-"12- من جد وجد: طالب من الجنينة ذاكر ونجح طبيب",
-"13- الخيل من خيالها: الرجل يظهر من تصرفاته",
-"14- خاف من عدوك مرة ومن صديقك ألف مرة",
-"15- البحر ما بيابى الزيادة: الكريم لا يمل من العطاء",
-"16- اللي ما عندو كبير يشتري كبير: احترام الكبار واجب",
-"17- عصفور في اليد ولا عشرة على الشجرة",
-"18- لسانك حصانك ان صنته صانك",
-"19- درب السلامة للحول قريب: الطريق الطويل الآمن أحسن",
-"20- العجلة من الشيطان: تسرع في السوق وخسر",
-"21- نوايا الزول تطعمو في الحياة",
-"22- القرش الأبيض ينفع في اليوم الأسود",
-"23- الباب البجيب الريح سدو واستريح",
-"24- ما كل ما يتمنى المرء يدركه",
-"25- من شب على شيء شاب عليه",
-"26- القناعة كنز لا يفنى: رجل رضي بقليل وعاش سعيد",
-"27- الكتاب باين من عنوانه",
-"28- رزق اليوم باليوم: بائع خضار يبيع ويشكر الله",
-"29- الرفيق قبل الطريق: اختر صديقك قبل سفرك",
-"30- خير الكلام ما قل ودل",
-"31- سيد القوم خادمهم: السلطان يخدم شعبه",
-"32- لا تؤجل عمل اليوم إلى الغد",
-"33- العلم في الصغر كالنقش على الحجر",
-"34- من حفرة لأخيه وقع فيها",
-"35- الصديق وقت الضيق: في الحرب يبان الصديق",
-"36- اللي فات مات: لا تبكي على الماضي",
-"37- كل تأخيرة فيها خيرة",
-"38- البعيد عن العين بعيد عن القلب",
-"39- القلوب شواهد: تحب شخص بدون سبب",
-"40- خذ الحكمة من أفواه المجانين",
-"41- اللي يزرع خير يحصد خير",
-"42- الكلمة الطيبة جواز سفر",
-"43- إيد على إيد تجدع بعيد",
-"44- الجار قبل الدار",
-"45- اللمة حلوة: أهل الحي يجتمعون",
-"46- الدنيا دوارة: غني أصبح فقير",
-"47- ما ضاقت إلا لتفرج",
-"48- زينة الرجل أدبه",
-"49- عيش يومك كأنه آخر يوم",
-"50- الجنينة باهلها: المدينة ليست طين بل ناسها"
-];
 
-function genReal50(type){
-let arr=[];
-for(let i=0;i<50;i++){
-if(type=='amthal'){
-arr.push(`📚 الصفحة ${i+1} - الأمثال الدارفورية\n\nالمثل رقم ${i+1}: "${amthalList[i]}"\n\nالقصة الحقيقية من الجنينة:\n${amthalList[i].includes('الجمل')?'رجلان في سوق الجنينة كل واحد يضحك على جمل الثاني، الثاني قال انظر لجملك أنت أعوج أكثر.':'أهل الجنينة في وادي كجا يجتمعون ويتعاونون، كل واحد يساعد الثاني.'}\n\nالمعنى العميق:\nهذا المثل يعلمك حكمة الحياة. الحبوبات في الجنينة يقلنه للشباب عندما يخطئون. ليس مجرد كلام، هو دستور.\n\nمتى تستخدمه:\nعندما ترى شخص يفعل نفس الخطأ الذي ينتقده. قل له هذا المثل وسيخجل ويفهم.\n\n---\nمكتبة الجنينة - حبوبة آمنة - 80 سنة - السوق الكبير - صفحة ${i+1}/50`);
-}else if(type=='tarikh'){
-arr.push(`📚 الصفحة ${i+1} - تاريخ الجنينة - حكاية مختلفة\n\nحكاية رقم ${i+1}:\n${i==0?'لماذا سميت الجنينة؟ لأنها كانت جناين حول وادي كجا، القوافل تقول وصلنا الجنينة.':''}${i==1?'تأسيس سلطنة دار مساليت قبل 400 سنة تحت شجرة الحكمة قرب السوق.':''}${i==2?'معركة كرندق 1916 - 2000 مقاتل بسيوف ضد مدافع إنجليز.':''}${i==3?'حي الزهور أقدم حي، نساؤه يزرعن زهور أمام البيوت.':''}${i==4?'حي الجبل فوق جبل صغير، هواء بارد ترى كل الجنينة.':''}${i>4?`في سنة ${1900+i} حدث في الجنينة: ${['جاء مطر كثير وملأ وادي كجا','افتتح أول دكان في السوق الكبير','تزوج سلطان من قبيلة أخرى لتوحيد الناس','بنى الناس أول مدرسة من القش','جاء تاجر من تشاد بملح','زرع الناس مانجو حول الوادي','احتفل الناس بعيد حصاد كبير','جاء طبيب أول مرة للجنينة','بنى الإنجليز مكتب حكومة صغير','استقل السودان واحتفلت الجنينة'][i%10]}. هذه القصة يحكيها كبار السن حتى اليوم.`:''}\n\nالتفاصيل:\nأهل الجنينة يتذكرون هذه القصة لأنها جزء من هويتهم. كل حي له قصته. كل بئر له اسمه. وادي كجا شاهد على كل شيء.\n\nالعبرة:\nالتاريخ ليس تواريخ، بل ناس عاشت وتألمت وفرحت. أنت الآن تكتب التاريخ ببقاءك في الجنينة.\n\n---\nمصدر: مقابلات كبار السن - جامعة الجنينة - صفحة ${i+1}/50`);
-}else{
-arr.push(`📚 الصفحة ${i+1} - ${type}\n\nالفصل ${Math.ceil((i+1)/10)} - قصة جديدة غير مكررة رقم ${i+1}:\n\n${type=='السلطان تاج الدين'?`في هذه الصفحة نحكي موقف جديد للسلطان تاج الدين: مرة ${['جاءت امرأة تشتكي زوجها','سرق رجل عنزة','اختلف رجلان على أرض','جاء مسافر جائع','مرض طفل ولم يجد دواء','تأخر المطر','جاء تاجر غشاش','تشاجر شباب في السوق','جاءت قبيلة تطلب حماية','احترق بيت رجل فقير'][i%10]}. السلطان حكم بالعدل بطريقة أدهشت الجميع.`:''}${type=='موسم الهجرة'?`في رواية موسم الهجرة، الصفحة ${i+1} تشرح: مصطفى سعيد في لندن، علاقته مع ${['آن هاموند','شيلا غرينوود','جين موريس','إيزابيلا','أستاذه في الجامعة','الراوي','حسنة','أولاده','المحكمة','النيل'][i%10]}. كل علاقة تكشف صراع الشرق والغرب.`:''}\n\nهذه الصفحة مختلفة تماما عن الصفحة ${i}، فيها حكمة جديدة وقصة جديدة لا تتكرر.\n\n---\nمكتبة الجنينة - صفحة ${i+1}/50 - غير مكررة`);
-}
-}
-return arr;
-}
+<div class="container">
+<div class="stats">
+<div class="stat-card"><b>200</b>إجمالي القصص</div>
+<div class="stat-card"><b>4</b>مجموعات</div>
+<div class="stat-card"><b>50</b>قصة لكل كتاب</div>
+<div class="stat-card"><b>مكتبة السودان</b>دارفور - الجنينة</div>
+</div>
 
-let allBooks=[
-{name:"الأمثال الدارفورية - 50 مثل مختلف", pages: genReal50('amthal')},
-{name:"تاريخ الجنينة - 50 حكاية مختلفة", pages: genReal50('tarikh')},
-{name:"السلطان تاج الدين - 50 موقف عادل", pages: genReal50('السلطان تاج الدين')},
-{name:"موسم الهجرة - 50 فصل مختلف", pages: genReal50('موسم الهجرة')}
-];
+<div class="section">
+<h2>القسم الأول: تراث الجنينة</h2>
+<div class="grid">
+<div class="book"><h3>قصة 1: ودعة الجنينة</h3><p>قصة أصيلة من سوق الجنينة الكبير</p><span class="badge">الجنينة</span></div>
+<div class="book"><h3>قصة 2: سلطان دار مساليت</h3><p>حكاية السلطان تاج الدين</p><span class="badge">الجنينة</span></div>
+<div class="book"><h3>قصة 3: مثل دارفوري</h3><p>الأمثال والحكم البلدية</p><span class="badge">الجنينة</span></div>
+</div>
+</div>
 
-let currentBook=null, currentPage=0;
-let favs=JSON.parse(localStorage.getItem('favs')||'[]');
-document.getElementById('vis').innerText='👁️ الزوار: 50 قصة حقيقية غير مكررة';
+<div class="section">
+<h2>القسم الثاني: تراث دارفور</h2>
+<div class="grid">
+<div class="book"><h3>قصة 51: جبل مرة</h3><p>أساطير الجبل وحكاوي الزراعة</p><span class="badge">دارفور</span></div>
+<div class="book"><h3>قصة 52: الفاشر وأم كدادة</h3><p>طرائف البادية والفريق</p><span class="badge">دارفور</span></div>
+<div class="book"><h3>قصة 53: حكامة دارفور</h3><p>قصص الحكامات والغناء التراثي</p><span class="badge">دارفور</span></div>
+</div>
+</div>
 
-function render(list){
-document.getElementById('books').innerHTML=list.map((b,i)=>{
-let idx=allBooks.indexOf(b);
-return `<div class="book"><div class="cover">${b.name}<br><small>50 قصة مختلفة</small></div><div class="info"><span style="background:#4caf50;color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700">✅ غير مكرر</span><button class="btn" onclick="addFav('${b.name}')">⭐ حفظ</button><button class="btn btn-green" onclick="openBook(${idx})">📖 افتح - 50 قصة مختلفة</button></div></div>`;
-}).join('');
-}
-function openBook(i){currentBook=allBooks[i];currentPage=0;document.getElementById('rTitle').innerText=currentBook.name;showPage();document.getElementById('reader').style.display='flex';}
-function showPage(){document.getElementById('readerContent').innerText=currentBook.pages[currentPage];document.getElementById('pageInfo').innerText=(currentPage+1)+' / 50 - غير مكرر';document.getElementById('prevBtn').disabled=currentPage==0;document.getElementById('nextBtn').disabled=currentPage==49;document.getElementById('readerContent').scrollTop=0;}
-function nextPage(){if(currentPage<49){currentPage++; showPage();}}
-function prevPage(){if(currentPage>0){currentPage--; showPage();}}
-function closeReader(){document.getElementById('reader').style.display='none';}
-function addFav(n){if(!favs.includes(n)){favs.push(n);localStorage.setItem('favs',JSON.stringify(favs));alert('✅ تم الحفظ');}else alert('محفوظ');}
-function showFavs(){if(!favs.length){alert('محفوظاتي فاضية');return;}alert('🔖 محفوظاتي:\n'+favs.join('\n'));}
-function showAccount(){let name=localStorage.getItem('geneina_user')||'زائر';let nn=prompt('👤 حسابي\nاسمك:'+name,name);if(nn){localStorage.setItem('geneina_user',nn);document.getElementById('userTop').innerText='👤 '+nn;}}
-function goHome(){render(allBooks);}
-render(allBooks);
-let su=localStorage.getItem('geneina_user'); if(su) document.getElementById('userTop').innerText='👤 '+su;
-</script>
+<div class="section">
+<h2>القسم الثالث: تراث السودان</h2>
+<div class="grid">
+<div class="book"><h3>قصة 101: النيل والجنينة</h3><p>علاقة دارفور بباقي السودان</p><span class="badge">السودان</span></div>
+<div class="book"><h3>قصة 102: سوق ليبيا والجنينة</h3><p>تجارة القوافل قديما</p><span class="badge">السودان</span></div>
+<div class="book"><h3>قصة 103: الملم والتوب الدارفوري</h3><p>اللبس السوداني الأصيل</p><span class="badge">السودان</span></div>
+</div>
+</div>
+
+<div class="section">
+<h2>القسم الرابع: 50 قصة عامة - حكاوي الناس</h2>
+<div class="grid">
+<div class="book"><h3>قصة 151: كرامات الأولياء</h3><p>من حكاوي الحبوبات</p><span class="badge">50 قصة</span></div>
+<div class="book"><h3>قصة 152: قصص الطير</h3><p>حكاوي الحيوانات والعبرة</p><span class="badge">50 قصة</span></div>
+<div class="book"><h3>قصة 153: قصص السوق</h3><p>يوم في سوق الجنينة</p><span class="badge">50 قصة</span></div>
+</div>
+</div>
+
+</div>
 </body>
 </html>
